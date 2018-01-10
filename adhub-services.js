@@ -5,6 +5,12 @@ var times = openDB('Votes/VoterTimes.json');
 const client = new Discord.Client();
 var fs = require('fs');
 const mainId = "374670637077233675";
+
+
+const config = require("./config.json");
+// The token of your bot - https://discordapp.com/developers/applications/me
+const token = config.token;
+
 var mainGuild;
 var mainChannel;
 var commandUse = [];
@@ -358,7 +364,7 @@ function timeBetween( date1, date2 ) {
   // Convert back to days and return
   return difference_ms >= 30; 
 }
-client.login('tocken here);
+client.login(token);
 
 dd(client);
 
