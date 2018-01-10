@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/AdHubBotDevelopers/Adhub_Services_Bot#readme",
   "dependencies": {
-    "discord.js": "^11.2.1"
+    "discord.js": "^11.2.1",
+    "json-file-db": "0.0.2"
   }
 }
