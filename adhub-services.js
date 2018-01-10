@@ -165,58 +165,9 @@ client.on('message', message => {
     }
     //if(message.content.substr() == '')
   }
-  if(message.content.substr(1, 5) == prefix + 'apply')
-  {
-    if(message.content.split(' ').length == 2)
-    {
-      client.fetchInvite(message.content.split(' ')[1]).then(g => {
-    //g is a GuildAuditLogs
-        message.channel.send(g.guild.name);
-        //log is a GuildAuditLogsEntry
-        //do stuff with log
-      });
-    } 
-  } 
 
-  if(message.content.split(' ')[0] == prefix + 'review')
-  {
-    //var add = openDB("review.json");
-    if(!message.member.roles.some(r=>["DC | Advertiser", "AdHub | Board of Directors"].includes(r.name)) )
-    {
-      return message.reply(" you do not have permissions to perform this command");
-    }
-    var arr = message.content.split(' ');
-    if(arr.length <= 3)
-    {
-      return message.reply(" sorry, incorrect arguments");
-    }
-    var revie = "";
-    for(var i = 3; i<arr.length; i++)
-    {
-        revie += arr[i];
-        if(arr.length - 1 != i)
-            revie += " ";
-    }
-    
-    if(coolDownArr.indexOf(message.author.id) >= 0)
-    {
-      return message.reply(" please wait before executing this command again.");
-    }
 
-    var chan = message.guild.channels.find(val => val.name == message.mentions.channels.first().name);
-    client.fetchInvite(message.content.split(' ')[1]).then(g => {
-      chan.send(revie + "\n" + g);
-      coolDownArr.push(message.author.id);
-      setTimeout(function()
-      {
-        var index = coolDownArr.indexOf(message.author.id);
-        if (index >= 0) {
-          arr.splice( index, 1 );
-        }
-      }, 30000)
-      
-    });
-  }   
+
 
 });
 
