@@ -4,13 +4,14 @@ var db = openDB('Votes/voters.json');
 var times = openDB('Votes/VoterTimes.json');
 const client = new Discord.Client();
 var fs = require('fs');
-const mainId = "374670637077233675";
 
 
 const config = require("./config.json");
 // The token of your bot - https://discordapp.com/developers/applications/me
 const token = config.token;
 const prefix = config.prefix;
+const mainId = config.mainId;
+
 
 var mainGuild;
 var mainChannel;
