@@ -10,6 +10,7 @@ const mainId = "374670637077233675";
 const config = require("./config.json");
 // The token of your bot - https://discordapp.com/developers/applications/me
 const token = config.token;
+const prefix = config.prefix;
 
 var mainGuild;
 var mainChannel;
@@ -21,7 +22,7 @@ client.on('ready', () => {
 
 client.on('message', message => {
  
-  if (message.content.substr(0, 5) === '/vote') {
+  if (message.content.substr(0, 5) === prefix + 'vote') {
     if(message.guild.id == mainId) 
     {
       times.get({id: parseInt(message.author.id)}, function(err, data) {
@@ -117,7 +118,7 @@ client.on('message', message => {
     
     
   }else{
-    if(message.content.substr(1, 10) == 'addCommand')
+    if(message.content.substr(1, 10) == prefix + 'addCommand')
     {
       if(message.content.length == 12)
         return message.reply(" please enter a command");
@@ -134,7 +135,7 @@ client.on('message', message => {
       });
       
     }
-    if(message.content.substr(1, 6) == 'config')
+    if(message.content.substr(1, 6) == prefix + 'config')
     {
       var commands = openDB('Client-Server/commands.json');
       var all = message.content.split(' ');
@@ -152,11 +153,11 @@ client.on('message', message => {
       }
       message.reply(" settings were configured successfully");
     }
-    if(message.content == '/ping')
+    if(message.content == prefix + 'ping')
     {
       return message.channel.send("pong!");
     }
-    if(message.content == '/help')
+    if(message.content == prefix + 'help')
     {
       
       message.channel.send("The help for the Adhub Voting Bot:\n/config <channel name> <using role> - Configures the bot for your server. (Admin Command)\n" +
@@ -164,7 +165,7 @@ client.on('message', message => {
     }
     //if(message.content.substr() == '')
   }
-  if(message.content.substr(1, 5) == 'apply')
+  if(message.content.substr(1, 5) == prefix + 'apply')
   {
     if(message.content.split(' ').length == 2)
     {
@@ -177,7 +178,7 @@ client.on('message', message => {
     } 
   } 
 
-  if(message.content.split(' ')[0] == '/review')
+  if(message.content.split(' ')[0] == prefix + 'review')
   {
     //var add = openDB("review.json");
     if(!message.member.roles.some(r=>["DC | Advertiser", "AdHub | Board of Directors"].includes(r.name)) )
