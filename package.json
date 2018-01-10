@@ -1,0 +1,22 @@
+{
+  "name": "adhub_services_bot",
+  "version": "1.0.0",
+  "description": "Partner Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdHubBotDevelopers/Adhub_Services_Bot.git"
+  },
+  "author": "AdHub Bot Devs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdHubBotDevelopers/Adhub_Services_Bot/issues"
+  },
+  "homepage": "https://github.com/AdHubBotDevelopers/Adhub_Services_Bot#readme",
+  "dependencies": {
+    "discord.js": "^11.2.1"
+  }
+}
