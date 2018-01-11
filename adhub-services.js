@@ -22,8 +22,8 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
- 
-  if (message.content.substr(0, 5) === prefix + 'vote') {
+  
+  if (message.content.split(' ')[0] === prefix + 'vote') {
     if(message.guild.id == mainId) 
     {
       times.get({id: parseInt(message.author.id)}, function(err, data) {
@@ -119,7 +119,7 @@ client.on('message', message => {
     
     
   }else{
-    if(message.content.substr(1, 10) == prefix + 'addCommand')
+    if(message.content.split(' ')[0] == prefix + 'addCommand')
     {
       if(message.content.length == 12)
         return message.reply(" please enter a command");
@@ -136,7 +136,7 @@ client.on('message', message => {
       });
       
     }
-    if(message.content.substr(1, 6) == prefix + 'config')
+    if(message.content.split(' ')[0] == prefix + 'config')
     {
       var commands = openDB('Client-Server/commands.json');
       var all = message.content.split(' ');
@@ -163,6 +163,16 @@ client.on('message', message => {
       
       message.channel.send("The help for the Adhub Voting Bot:\n/config <channel name> <using role> - Configures the bot for your server. (Admin Command)\n" +
       "/addCommand command - adds the command which will be triggered on a player voting for this server\n");
+    }
+    if(message.content.split(' ')[0] == prefix + 'ban')
+    {
+      try{
+        message.guild.ban(message.mentions.members.first());
+        message.channel.send(message.mentions.members.first() + " was banned successfully");
+      }catch(err)
+      {
+        // Does not have permissions
+      }
     }
     //if(message.content.substr() == '')
   }
