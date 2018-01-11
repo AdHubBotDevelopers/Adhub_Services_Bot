@@ -167,6 +167,10 @@ client.on('message', message => {
     if(message.content.split(' ')[0] == prefix + 'ban')
     {
       try{
+        if(message.content.split(' ') - 1 != 1)
+        {
+          return message.reply(" please provide correct arguments");
+        }
         message.guild.ban(message.mentions.members.first());
         message.channel.send(message.mentions.members.first() + " was banned successfully");
       }catch(err)
