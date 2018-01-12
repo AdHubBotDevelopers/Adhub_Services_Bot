@@ -109,7 +109,7 @@ client.on('message', message => {
             }
           });        
         }else{
-          message.reply(" there is no server on Adhub owned by " + message.mentions.members.first());
+          message.reply(" there is no server on AdHub owned by " + message.mentions.members.first());
         }
       }else{
         message.reply(" you already voted on " + time)
@@ -161,7 +161,7 @@ client.on('message', message => {
     if(message.content == prefix + 'help')
     {
       
-      message.channel.send("The help for the Adhub Voting Bot:\n/config <channel name> <using role> - Configures the bot for your server. (Admin Command)\n" +
+      message.channel.send("The help for the AdHub Voting Bot:\n/config <channel name> <using role> - Configures the bot for your server. (Admin Command)\n" +
       "/addCommand command - adds the command which will be triggered on a player voting for this server\n");
     }
     if(message.content.split(' ')[0] == prefix + 'ban')
@@ -423,7 +423,7 @@ function dd(bot)
   
     banned.push(msg.author.id);
   
-      var role = msg.guild.roles.find(val => val.name == "Adhub-Mute");
+      var role = msg.guild.roles.find(val => val.name == "AdHub-Mute");
       msg.guild.members.find(val => val.id == msg.author.id).addRole(role);
       setTimeout(function()
       {
