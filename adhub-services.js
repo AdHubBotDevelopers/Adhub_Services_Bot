@@ -195,6 +195,17 @@ client.on('message', message => {
     }
     if(message.content.startsWith(prefix + 'mute'))
     {
+      try
+      {
+        if(message.content.split(' ').length - 1 != 2)
+        {
+          return message.reply(" please provide correct arguments");
+        }
+        // Give some mute role.
+        // Set timeout before removing role
+      }catch(err)
+      {
+      }
     }
     //if(message.content.substr() == '')
   }
