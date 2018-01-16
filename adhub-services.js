@@ -167,7 +167,7 @@ client.on('message', message => {
     if(message.content.split(' ')[0] == prefix + 'ban')
     {
       try{
-        if(message.content.split(' ') - 1 != 1)
+        if(message.content.split(' ').length - 1 != 1)
         {
           return message.reply(" please provide correct arguments");
         }
@@ -177,6 +177,24 @@ client.on('message', message => {
       {
         // Does not have permissions
       }
+    }
+    if(message.content.startsWith(prefix + 'unban'))
+    {
+      try
+      {
+        if(message.content.split(' ').length - 1 != 1)
+        {
+          return message.reply(" please provide correct arguments");
+        }
+        message.guild.unban(message.mentions.members.first());
+        message.channel.send(message.mentions.members.first() + " was unbanned successfully");
+      }catch(err)
+      {
+        
+      }
+    }
+    if(message.content.startsWith(prefix + 'mute'))
+    {
     }
     //if(message.content.substr() == '')
   }
