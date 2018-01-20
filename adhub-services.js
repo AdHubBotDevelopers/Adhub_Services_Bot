@@ -201,6 +201,11 @@ client.on('message', message => {
         {
           return message.reply(" please provide correct arguments");
         }
+        message.author.addRole(message.guild.roles.find(val => val.name == 'Muted'));
+        client.setTimeout(function()
+        {
+          message.author.removeRole(message.guild.roles.find(val => val.name == 'Muted'));
+        }, parseInt(message.content.split(' ')[1]));
         // Give some mute role.
         // Set timeout before removing role
       }catch(err)
