@@ -212,6 +212,20 @@ client.on('message', message => {
       {
       }
     }
+    if(message.content.strartsWith(prefix + "kick"))
+    {
+      try
+      {
+        if(message.content.split(' ').length - 1 != 2)
+        {
+          return message.reply(" please provide correct arguments");
+        }
+        
+        message.guild.kick(message.mentions.members.first());
+      }catch(err)
+      {
+      }
+    }
     //if(message.content.substr() == '')
   }
 
