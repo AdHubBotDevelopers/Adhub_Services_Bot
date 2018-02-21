@@ -212,7 +212,7 @@ client.on('message', message => {
       {
       }
     }
-    if(message.content.strartsWith(prefix + "kick"))
+    if(message.content.startsWith(prefix + "kick"))
     {
       try
       {
