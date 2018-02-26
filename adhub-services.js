@@ -164,66 +164,46 @@ client.on('message', message => {
       message.channel.send("The help for the AdHub Voting Bot:\n/config <channel name> <using role> - Configures the bot for your server. (Admin Command)\n" +
       "/addCommand command - adds the command which will be triggered on a player voting for this server\n");
     }
-    if(message.content.split(' ')[0] == prefix + 'ban')
+    if(message.content.startsWith(prefix + 'ban'))
     {
-      try{
-        if(message.content.split(' ').length - 1 != 1)
-        {
-          return message.reply(" please provide correct arguments");
-        }
+      if(!message.member.roles.some(r=>["DC | Admin", "AdHub | Board of Directors"].includes(r.name)) )
+      {
+        message.channel.send("You do not have permissions to ban");
+      }else
+      {
         message.guild.ban(message.mentions.members.first());
-        message.channel.send(message.mentions.members.first() + " was banned successfully");
-      }catch(err)
-      {
-        // Does not have permissions
-      }
-    }
-    if(message.content.startsWith(prefix + 'unban'))
-    {
-      try
-      {
-        if(message.content.split(' ').length - 1 != 1)
-        {
-          return message.reply(" please provide correct arguments");
-        }
-        message.guild.unban(message.mentions.members.first());
-        message.channel.send(message.mentions.members.first() + " was unbanned successfully");
-      }catch(err)
-      {
-        
       }
     }
     if(message.content.startsWith(prefix + 'mute'))
     {
-      try
+      if(!message.member.roles.some(r=>["DC | Moderators", "DC | Admin", "AdHub | Board of Directors"].includes(r.name)) )
       {
-        if(message.content.split(' ').length - 1 != 2)
-        {
-          return message.reply(" please provide correct arguments");
-        }
-        message.author.addRole(message.guild.roles.find(val => val.name == 'Muted'));
-        client.setTimeout(function()
-        {
-          message.author.removeRole(message.guild.roles.find(val => val.name == 'Muted'));
-        }, parseInt(message.content.split(' ')[1]));
-        // Give some mute role.
-        // Set timeout before removing role
-      }catch(err)
+        message.channel.send("You do not have permissions to mute");
+      }else
       {
+        var role = message.guild.roles.find(val => val.name == "Adhub-Mute");
+        message.guild.members.find(val => val.id == message.author.id).addRole(role);
       }
     }
-    if(message.content.startsWith(prefix + "kick"))
+    if(message.content.startsWith(prefix + 'unban'))
     {
-      try
+      if(!message.member.roles.some(r=>["DC | Admin", "AdHub | Board of Directors"].includes(r.name)) )
       {
-        if(message.content.split(' ').length - 1 != 2)
-        {
-          return message.reply(" please provide correct arguments");
-        }
-        
-        message.guild.kick(message.mentions.members.first());
-      }catch(err)
+        message.channel.send("You do not have permissions to unban");
+      }else
       {
+        message.guild.unban(message.mentions.members.first());
+      }
+    }
+    if(message.content.startsWith(prefix + 'unmute'))
+    {
+      if(!message.member.roles.some(r=>["DC | Moderators", "DC | Admin", "AdHub | Board of Directors"].includes(r.name)) )
+      {
+        message.channel.send("You do not have permissions to unmute");
+      }else
+      {
+        var role = message.guild.roles.find(val => val.name == "Adhub-Mute");
+        message.guild.members.find(val => val.id == message.author.id).removeRole(role);
       }
     }
     //if(message.content.substr() == '')
