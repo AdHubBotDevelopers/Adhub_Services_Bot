@@ -1,10 +1,25 @@
-const Discord = require('discord.js');
+const Commando = require('discord.js-commando');
 var openDB = require('json-file-db');
-var db = openDB('Votes/voters.json'); 
+var db = openDB('Votes/voters.json');
 var times = openDB('Votes/VoterTimes.json');
-const client = new Discord.Client();
+const path = require('path');
+const sqlite = require('sqlite');
+const client = new Commando.client({
+  owner: '118455061222260736'
+});
 var fs = require('fs');
 
+client.registry
+.registerGroups([
+  ['required', 'Commnads necessary for operation'],
+  ['fun', 'Commands that are not necessary, but are instead fun']
+])
+.registerDefaults()
+.registerCommandsIn(path.join(__dirname, 'commands'));
+
+client.setProvider(
+  sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new Commando.SQLiteProvider(db))
+).catch(console.error);
 
 const config = require("./config.json");
 // The token of your bot - https://discordapp.com/developers/applications/me
@@ -22,9 +37,9 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-  
+
   if (message.content.split(' ')[0] === prefix + 'vote') {
-    if(message.guild.id == mainId) 
+    if(message.guild.id == mainId)
     {
       times.get({id: parseInt(message.author.id)}, function(err, data) {
         var time;
@@ -40,24 +55,24 @@ client.on('message', message => {
           //wwww("Here");
         }
         //wwww(time.getMilliseconds());
-         
-      if(daysBetween(new Date(), time) || good)        
+
+      if(daysBetween(new Date(), time) || good)
       {
         if(fs.existsSync("Guild-Owners/" + message.mentions.members.first().id + ".txt"))
         {
           fs.readFile("Guild-Owners/" + message.mentions.members.first().id + ".txt", function(err,data){
             if(!err)
             {
-              
+
               const guil = client.guilds.find(val => val.id == data);
-              
+
               var temp;
               var obj;
               times.put({id: parseInt(message.author.id), lastTime: time.getTime()}, function(err) {});
-   
+
               db.get({id: parseInt(message.author.id), server:guil.id}, function(err, data){
                 try{
-              //wwww(JSON.stringify(data));                
+              //wwww(JSON.stringify(data));
                   temp = parseInt(JSON.stringify(data[0]).split(':')[3].split('}')[0]);
                   //wwww(JSON.stringify(data[0]).split(':')[3].split('}')[0]);
                 }catch(ex)
@@ -65,14 +80,14 @@ client.on('message', message => {
                   temp = 0;
                 }
                 db.put({id: parseInt(message.author.id), server: guil.id, value: temp + 1}, function(err){
-                 
-                });                
+
+                });
                 ////wwww("Data is " + data[0].data);
-                
-                
+
+
               });
-           
-              var ser = openDB('Votes/server.json');             
+
+              var ser = openDB('Votes/server.json');
               ser.get({id: parseInt(guil.id)}, function(err, data){
                 var temp;
                 if(data.length != 0)
@@ -83,17 +98,17 @@ client.on('message', message => {
                 {
                   leaderBoard();
                 });
-                
+
               });
-              
-               message.reply(" successfully voted!");              
+
+               message.reply(" successfully voted!");
               var commands = openDB('Client-Server/commands.json');
-              commands.get({id: parseInt(guil.id)}, function (err, data){  
+              commands.get({id: parseInt(guil.id)}, function (err, data){
                 var dat;
                 try {
                 const channel = guil.channels.find(val => val.id == data[0].channel.id);
                 channel.send(message.author + " voted!");
-                           
+
                 console.log(data);
                 if(data == undefined || data[0] == undefined || data[0].command == undefined)
                   dat = [];
@@ -102,12 +117,12 @@ client.on('message', message => {
                 for(var i = 0; i<dat.length; i++) channel.send(dat[i]);
                 }catch(ex) {}
               });
-              
+
                           //if(guil.)
 
 
             }
-          });        
+          });
         }else{
           message.reply(" there is no server on AdHub owned by " + message.mentions.members.first());
         }
@@ -116,8 +131,8 @@ client.on('message', message => {
       }
     });
     }
-    
-    
+
+
   }else{
     if(message.content.split(' ')[0] == prefix + 'addCommand')
     {
@@ -130,11 +145,11 @@ client.on('message', message => {
           prev = "";
         else
           prev = data[0].command;
-          commands.put({id: parseInt(message.guild.id), command: prev + "\n" + message.content.substring(10)}, 
-                function (err) {});    
+          commands.put({id: parseInt(message.guild.id), command: prev + "\n" + message.content.substring(10)},
+                function (err) {});
           message.reply(" your command has been added");
       });
-      
+
     }
     if(message.content.split(' ')[0] == prefix + 'config')
     {
@@ -160,7 +175,7 @@ client.on('message', message => {
     }
     if(message.content == prefix + 'help')
     {
-      
+
       message.channel.send("The help for the AdHub Voting Bot:\n/config <channel name> <using role> - Configures the bot for your server. (Admin Command)\n" +
       "/addCommand command - adds the command which will be triggered on a player voting for this server\n");
     }
@@ -216,19 +231,19 @@ client.on('message', message => {
 
 var coolDownArr = [];
 client.on('guildCreate', guild => {
-  
+
   fs.writeFile("Guild-Owners/" + guild.ownerId + ".txt", guild.id, function(err) {
       if(err) {
           return; //wwww(err);
       }
-  
+
       //wwww("The file was saved!");
-  });   
-  
+  });
+
 });
 
 client.on('guildMemberRemove', member => {
-    var ser = openDB('Votes/server.json');             
+    var ser = openDB('Votes/server.json');
     ser.get({id: parseInt(member.guild.id)}, function(err, data){
     var temp;
     if(data.length != 0)
@@ -243,11 +258,11 @@ client.on('guildMemberRemove', member => {
       {
         temp1 = 0;
       }
-      ser.put({id: parseInt(member.guild.id), votes: temp1-temp}, function(err){});      
-    });      
+      ser.put({id: parseInt(member.guild.id), votes: temp1-temp}, function(err){});
+    });
 
-  });  
-  
+  });
+
 });
 
 
@@ -287,16 +302,16 @@ function leaderBoard()
                     client.guilds.find(val => val.id == jsonObj[adjust].id).fetchInvites().then(invites => {
                       servers += invites.array().length > 0 ? "\n" + (adjust+1) + ". " + invites.array()[0] : "\n" + (adjust + 1) + ". Server does not have an invite link";
                         endOf(servers , jsonObj);
-                    });                       
+                    });
                   }else endOf(servers , jsonObj);
-                });                   
+                });
               }else endOf(servers , jsonObj);
-            });               
+            });
           }else endOf(servers , jsonObj);
-        });        
+        });
       }else endOf(servers , jsonObj);
     });
- 
+
   });
 }
 
@@ -307,7 +322,7 @@ function endOf(servers, jsonObj)
               var temp = "Top 5 Servers \n";
               for(var i = jsonObj.length > 5 ? 4 : jsonObj.length - 1 ; i>=0; i--)
               {
-                temp += (i + 1) + ", " + client.guilds.find(val => val.id == jsonObj[i].id).name 
+                temp += (i + 1) + ", " + client.guilds.find(val => val.id == jsonObj[i].id).name
                 + " " + jsonObj[i].votes;
                 if(i != 0) temp += "\n";
               }
@@ -316,19 +331,19 @@ function endOf(servers, jsonObj)
               //wwww("NOW:: " + servers);
               mainChannel.fetchMessage('395319602676236288')
             .then(message => message.editCode(servers));
-           
+
 }
 
-function GetSortOrder(prop) {  
-    return function(a, b) {  
-        if (a[prop] < b[prop]) {  
-            return 1;  
-        } else if (a[prop] > b[prop]) {  
-            return -1;  
-        }  
-        return 0;  
-    }  
-}  
+function GetSortOrder(prop) {
+    return function(a, b) {
+        if (a[prop] < b[prop]) {
+            return 1;
+        } else if (a[prop] > b[prop]) {
+            return -1;
+        }
+        return 0;
+    }
+}
 
 function daysBetween( date1, date2 ) {
   //Get 1 day in milliseconds
@@ -340,9 +355,9 @@ function daysBetween( date1, date2 ) {
 
   // Calculate the difference in milliseconds
   var difference_ms = date2_ms - date1_ms;
-    
+
   // Convert back to days and return
-  return difference_ms / one_day * 7 >= 7; 
+  return difference_ms / one_day * 7 >= 7;
 }
 
 function timeBetween( date1, date2 ) {
@@ -355,9 +370,9 @@ function timeBetween( date1, date2 ) {
 
   // Calculate the difference in milliseconds
   var difference_ms = date2_ms - date1_ms;
-    
+
   // Convert back to days and return
-  return difference_ms >= 30; 
+  return difference_ms >= 30;
 }
 client.login(token);
 
@@ -382,7 +397,7 @@ const maxDuplicatesBan = 10;
 function dd(bot)
 {
   bot.on('message', msg => {
-  
+
     if(msg.author.id != bot.user.id){
       var now = Math.floor(Date.now());
       authors.push({
@@ -393,7 +408,7 @@ function dd(bot)
         "message": msg.content,
         "author": msg.author.id
       });
-  
+
       // Check how many times the same message has been sent.
       var msgMatch = 0;
       for (var i = 0; i < messagelog.length; i++) {
@@ -408,9 +423,9 @@ function dd(bot)
       if (msgMatch == maxDuplicatesBan && !banned.includes(msg.author.id)) {
         ban(msg, msg.author.id);
       }
-  
+
       var matched = 0;
-      
+
       for (var i = 0; i < authors.length; i++) {
         if (authors[i].time > now - interval) {
           matched++;
@@ -434,23 +449,23 @@ function dd(bot)
       }
     }
   });
-  
+
   function warn(msg, userid) {
     warned.push(msg.author.id);
     msg.channel.send(msg.author + " " + warningMessage);
   }
-  
-  
+
+
   function ban(msg, userid) {
     for (var i = 0; i < messagelog.length; i++) {
       if (messagelog[i].author == msg.author.id) {
         messagelog.splice(i);
-  
+
       }
     }
-  
+
     banned.push(msg.author.id);
-  
+
       var role = msg.guild.roles.find(val => val.name == "AdHub-Mute");
       msg.guild.members.find(val => val.id == msg.author.id).addRole(role);
       setTimeout(function()
@@ -458,7 +473,7 @@ function dd(bot)
         msg.guild.members.find(val => val.id == msg.author.id).removeRole(role);
         msg.reply("Mute is up, please do not spam");
       }, 300000);
-      
+
       msg.reply(" did not cease and desist");
   }
 }
