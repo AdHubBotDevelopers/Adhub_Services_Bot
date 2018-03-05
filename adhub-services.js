@@ -4,15 +4,17 @@ var db = openDB('Votes/voters.json');
 var times = openDB('Votes/VoterTimes.json');
 const path = require('path');
 const sqlite = require('sqlite');
-const client = new Commando.client({
-  owner: '118455061222260736'
-});
+const client = new Commando.CommandoClient({
+  owner: '118455061222260736',
+  commandPrefix: '\\',
+  disableEveryone: true
+})
 var fs = require('fs');
 
 client.registry
 .registerGroups([
-  ['required', 'Commnads necessary for operation'],
-  ['fun', 'Commands that are not necessary, but are instead fun']
+  ['required', 'Commands necessary for operation'],
+  ['misc', 'Commands that are not necessary, but useful']
 ])
 .registerDefaults()
 .registerCommandsIn(path.join(__dirname, 'commands'));
@@ -34,6 +36,7 @@ var commandUse = [];
 client.on('ready', () => {
   mainGuild = client.guilds.find(val => val.id == mainId);
   mainChannel = mainGuild.channels.find(val => val.name == "leaderboard");
+  client.user.setActivity('with code!');
 });
 
 client.on('message', message => {
