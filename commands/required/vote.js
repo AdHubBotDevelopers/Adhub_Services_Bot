@@ -2,6 +2,11 @@ const { Command } = require('discord.js-commando');
 
 const config = require('../../config.json');
 const mainId = config.mainId;
+var openDB = require('json-file-db');
+var times = openDB('../../Votes/VoterTimes.json');
+var db = openDB('Votes/voters.json');
+var fs = require('fs');
+
 
 module.exports = class VoteCommand extends Command {
   constructor(client) {
@@ -10,11 +15,18 @@ module.exports = class VoteCommand extends Command {
       group: 'required',
       memberName: 'vote',
       description: 'Upvotes a server on the leaderboard',
-      examples: ['/vote']
+      examples: ['/vote'],
+      args: [
+        {
+          key: 'owner',
+          prompt: 'Please mention the owner',
+          type: 'user'
+        }
+      ]
     })
   }
 
-  run(message) {
+  run(message, { owner }) {
     if(message.guild.id == mainId)
     {
       times.get({id: parseInt(message.author.id)}, function(err, data) {
@@ -34,9 +46,9 @@ module.exports = class VoteCommand extends Command {
 
       if(daysBetween(new Date(), time) || good)
       {
-        if(fs.existsSync("Guild-Owners/" + message.mentions.members.first().id + ".txt"))
+        if(fs.existsSync("../../Guild-Owners/" + owner.id + ".txt"))
         {
-          fs.readFile("Guild-Owners/" + message.mentions.members.first().id + ".txt", function(err,data){
+          fs.readFile("../../Guild-Owners/" + owner.id + ".txt", function(err,data){
             if(!err)
             {
 
@@ -63,7 +75,7 @@ module.exports = class VoteCommand extends Command {
 
               });
 
-              var ser = openDB('Votes/server.json');
+              var ser = openDB('../../Votes/server.json');
               ser.get({id: parseInt(guil.id)}, function(err, data){
                 var temp;
                 if(data.length != 0)
@@ -78,7 +90,7 @@ module.exports = class VoteCommand extends Command {
               });
 
                message.reply(" successfully voted!");
-              var commands = openDB('Client-Server/commands.json');
+              var commands = openDB('../../Client-Server/commands.json');
               commands.get({id: parseInt(guil.id)}, function (err, data){
                 var dat;
                 try {
@@ -100,7 +112,7 @@ module.exports = class VoteCommand extends Command {
             }
           });
         }else{
-          message.reply(" there is no server on AdHub owned by " + message.mentions.members.first());
+          message.reply(" there is no server on AdHub owned by " + owner.name);
         }
       }else{
         message.reply(" you already voted on " + time)
@@ -108,4 +120,33 @@ module.exports = class VoteCommand extends Command {
     });
     }
   }
+}
+function daysBetween( date1, date2 ) {
+  //Get 1 day in milliseconds
+  var one_day=1000*60*60*24;
+
+  // Convert both dates to milliseconds
+  var date1_ms = date1.getTime();
+  var date2_ms = date2.getTime();
+
+  // Calculate the difference in milliseconds
+  var difference_ms = date2_ms - date1_ms;
+
+  // Convert back to days and return
+  return difference_ms / one_day * 7 >= 7;
+}
+
+function timeBetween( date1, date2 ) {
+  //Get 1 day in milliseconds
+  var one_day=1000*60*60*24;
+
+  // Convert both dates to milliseconds
+  var date1_ms = date1.getTime();
+  var date2_ms = date2.getTime();
+
+  // Calculate the difference in milliseconds
+  var difference_ms = date2_ms - date1_ms;
+
+  // Convert back to days and return
+  return difference_ms >= 30;
 }
