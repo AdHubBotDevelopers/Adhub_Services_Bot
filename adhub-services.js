@@ -393,7 +393,7 @@ const warnBuffer = 3;
 const maxBuffer = 5;
 const interval = 1000;
 const warningMessage = "Please cease your spamming!";
-const banMessage = "did not cease and disest there activities";
+const banMessage = "did not cease and desist their activities";
 const maxDuplicatesWarning = 7;
 const maxDuplicatesBan = 10;
 

@@ -15,7 +15,7 @@ module.exports = class VoteCommand extends Command {
       group: 'required',
       memberName: 'vote',
       description: 'Upvotes a server on the leaderboard',
-      examples: ['/vote'],
+      examples: ['vote <Owner Mention>'],
       args: [
         {
           key: 'owner',
