@@ -37,6 +37,7 @@ client.on('ready', () => {
   mainGuild = client.guilds.find(val => val.id == mainId);
   mainChannel = mainGuild.channels.find(val => val.name == "leaderboard");
   client.user.setActivity('with code!');
+  console.log('Reporting for duty!');
 });
 
 client.on('message', message => {
