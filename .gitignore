@@ -63,3 +63,4 @@ package-lock\.json
 settings\.sqlite3
 
 Votes/
+DB\*
