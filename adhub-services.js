@@ -5,7 +5,7 @@ var times = openDB('../../Votes/VoterTimes.json');
 const path = require('path');
 const sqlite = require('sqlite');
 const client = new Commando.CommandoClient({
-  owner: '118455061222260736',
+  owner: ['118455061222260736', '396676498892914688', '285529770668851200', '396528169978560512'],
   commandPrefix: '\\',
   disableEveryone: true
 })
