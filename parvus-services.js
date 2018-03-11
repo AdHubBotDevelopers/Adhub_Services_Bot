@@ -192,7 +192,6 @@ function timeBetween( date1, date2 ) {
 }
 client.login(token);
 
-dd(client);
 
 
 
