@@ -32,7 +32,7 @@ var mainGuild;
 var mainChannel;
 var commandUse = [];
 client.on('ready', () => {
-  client.user.setActivity('with code!');
+  client.user.setActivity('with raiders, hackers, and scammers oh my!');
   console.log('Reporting for duty!');
 });
 
