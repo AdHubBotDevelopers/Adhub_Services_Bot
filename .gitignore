@@ -58,3 +58,8 @@ typings/
 .env
 
 config.json
+package-lock\.json
+
+settings\.sqlite3
+
+Votes/
