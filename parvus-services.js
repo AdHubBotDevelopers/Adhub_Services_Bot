@@ -1,7 +1,7 @@
 const Commando = require('discord.js-commando');
 var openDB = require('json-file-db');
 var db = openDB('Votes/voters.json');
-var times = openDB('../../Votes/VoterTimes.json');
+var times = openDB('Votes/VoterTimes.json');
 const path = require('path');
 const sqlite = require('sqlite');
 const client = new Commando.CommandoClient({
@@ -23,7 +23,7 @@ client.setProvider(
   sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new Commando.SQLiteProvider(db))
 ).catch(console.error);
 
-const config = require("./config.json");
+const config = require("config.json");
 // The token of your bot - https://discordapp.com/developers/applications/me
 const token = config.token;
 const prefix = config.prefix;
