@@ -12,7 +12,7 @@ module.exports = class GlobalBanCommand extends Command {
       args: [
         {
           key: 'victim',
-          prompt: 'Please enter the ID of the person you wish to ban',
+          prompt: 'Please mention the person you wish to ban',
           type: 'user'
         },
         {
@@ -44,6 +44,7 @@ module.exports = class GlobalBanCommand extends Command {
         message.say(`Successfully globally banned ${victim.username}`);
         console.log(`Successfully globally banned ${victim.username}`);
       }
-    })
+    });
+    victim.ban(reason);
   }
     }

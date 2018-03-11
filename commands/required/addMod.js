@@ -22,13 +22,13 @@ module.exports = class AddModCommand extends Command {
     if (this.client.isOwner(message.author)) {
       return true;
     } else {
-      return 'Only Bot Owners can use this command.'
+      return message.say('Only Bot Owners can use this command.');
     }
   }
 
   run(message, { luckyDuck }) {
     var modList = openDB('DB/ModList.json');
-    modList.put({id: luckyDuck.id}, function(err) {
+    modList.put({user: luckyDuck}, function(err) {
       if (err != null) {
         console.log(err);
       } else {

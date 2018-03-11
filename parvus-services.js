@@ -266,8 +266,10 @@ function dd(bot)
   });
 
   function warn(msg, userid) {
+    if(userid != 235088799074484224) {
     warned.push(msg.author.id);
     msg.channel.send(msg.author + " " + warningMessage);
+  }
   }
 
 
