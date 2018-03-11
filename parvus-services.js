@@ -4,12 +4,14 @@ var db = openDB('Votes/voters.json');
 var times = openDB('Votes/VoterTimes.json');
 const path = require('path');
 const sqlite = require('sqlite');
+const yargs = require('yargs').argv;
 const client = new Commando.CommandoClient({
   owner: ['118455061222260736', '396676498892914688', '285529770668851200', '396528169978560512'],
   commandPrefix: '\\',
   disableEveryone: true
 })
 var fs = require('fs');
+const token = yargs.token;
 
 client.registry
 .registerGroups([
@@ -23,19 +25,13 @@ client.setProvider(
   sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new Commando.SQLiteProvider(db))
 ).catch(console.error);
 
-const config = require("config.json");
-// The token of your bot - https://discordapp.com/developers/applications/me
-const token = config.token;
-const prefix = config.prefix;
-const mainId = config.mainId;
+
 
 
 var mainGuild;
 var mainChannel;
 var commandUse = [];
 client.on('ready', () => {
-  mainGuild = client.guilds.find(val => val.id == mainId);
-  mainChannel = mainGuild.channels.find(val => val.name == "leaderboard");
   client.user.setActivity('with code!');
   console.log('Reporting for duty!');
 });
