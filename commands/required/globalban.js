@@ -13,7 +13,7 @@ module.exports = class GlobalBanCommand extends Command {
         {
           key: 'victim',
           prompt: 'Please mention the person you wish to ban',
-          type: 'user'
+          type: 'member'
         },
         {
           key: 'reason',
@@ -25,26 +25,27 @@ module.exports = class GlobalBanCommand extends Command {
   }
   hasPermission(message) {
     var modList = openDB('DB/ModList.json');
-  modList.get({id: parseInt(message.author.id)}, function(err, data) {
-      if(data.length != 0) {
+/*  modList.get({id: parseInt(message.author.id)}, function(err, data) {
+      if(data.length != 0 || this.client.isOwner(message.author)) {
         return true;
         console.log(`${message.author} is a global mod!`)
       } else {
-        return 'Only Parvasian Global Moderators can use this command' ;
-        //return this.client.isOwner(message.author.id);
+        return message.say('Only Parvasian Global Moderators can use this command');
+
       }
-    });
+    });*/
+      return this.client.isOwner(message.author.id);
   }
   run(message, { victim, reason }) {
     var banList = openDB('DB/GlobalBanList.json');
-    banList.put({user: victim, reason: reason}, function(err) {
+    banList.put({user: victim.user, reason: reason}, function(err) {
       if (err != null) {
         console.log(err);
       } else {
-        message.say(`Successfully globally banned ${victim.username}`);
-        console.log(`Successfully globally banned ${victim.username}`);
+        message.say(`Successfully globally banned ${victim.user.username}`);
+        console.log(`Successfully globally banned ${victim.user.username}`);
       }
     });
-    victim.ban(reason);
+    victim.kick(reason);
   }
     }
