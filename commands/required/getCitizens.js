@@ -8,7 +8,6 @@ var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH || process.env.USERPRO
 var TOKEN_PATH = TOKEN_DIR + '\\sheets.googleapis.com-parvasian-services.json';
 
 
-
 module.exports = class CitizenDataCommand extends Command {
   constructor(client) {
     super(client, {
@@ -48,8 +47,6 @@ module.exports = class CitizenDataCommand extends Command {
 
 
 }
-
-
 
 function authorize(credentials, callback) {
   var clientSecret = credentials.installed.client_secret;
