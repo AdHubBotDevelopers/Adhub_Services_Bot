@@ -39,6 +39,9 @@ module.exports = class CitizenDataCommand extends Command {
           for(var i = 0; i < citizenList.length; i++) {
             if(citizenList[i] == user.username + '#' + user.discriminator) {
               var data = citizenList[i];
+              message.say('Data is: ' + data);
+              console.log('Found them1');
+              return;
             } else {
               console.log('Not them!');
             }
