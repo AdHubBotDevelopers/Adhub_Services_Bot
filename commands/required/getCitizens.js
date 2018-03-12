@@ -32,7 +32,7 @@ module.exports = class CitizenDataCommand extends Command {
         console.log('Error reading client secret file:' + err);
         return;
       }
-      var citizenList = authorize(JSON.parse(content), returnCitizens);
+      var citizenList = returnCitizens(JSON.parse(content), message);
       for(var i = 0; i < citizenList.length; i++) {
         if(citizenList[i] == user.username + '#' + user.discriminator) {
           var data = citizenList[i];
@@ -61,7 +61,7 @@ function authorize(credentials, callback) {
       getNewToken(oath2Client, callback);
     } else {
       oath2Client.credentials = JSON.parse(token);
-      callback(oath2Client);
+      return oath2Client;
     }
   });
 }
