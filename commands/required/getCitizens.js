@@ -27,15 +27,25 @@ module.exports = class CitizenDataCommand extends Command {
     });
   }
 
-  run(message) {
+  run(message, { user }) {
     fs.readFile('client_secret.json', function processClientSecrets(err, content) {
       if(err) {
         console.log('Error reading client secret file:' + err);
         return;
       }
-      authorize(JSON.parse(content), listCitizens);
+      var citizenList = authorize(JSON.parse(content), returnCitizens);
+      for(var i = 0; i < citizenList.length; i++) {
+        if(citizenList[i] == user.username + '#' + user.discriminator) {
+          var data = citizenList[i];
+        } else {
+          console.log('Not them!');
+        }
+      }
     })
+
   }
+
+
 
 }
 
@@ -117,4 +127,25 @@ function listCitizens(auth) {
     }
   });
 
+}
+
+function returnCitizens(auth, message) {
+  var sheets = google.sheets('v4');
+  sheets.spreadsheets.values.get({
+    auth: auth,
+    spreadsheetId: '1Cec6aByI2NOcmVBAikHw1L9ZJj-kRT10lVieERkChEk',
+    range: 'Citizens!A6:E'
+  },function(err, response) {
+    if (err) {
+      console.log('The API Returned an Error' + err);
+      return;
+    }
+    var rows = response.values;
+    if (rows.length == 0) {
+      console.log('No Data Found');
+      message.say('There was no data found in the spreadsheet. Please contact the High Court');
+    } else {
+      return rows;
+    }
+  })
 }
