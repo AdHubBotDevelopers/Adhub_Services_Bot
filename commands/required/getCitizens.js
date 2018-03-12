@@ -32,17 +32,20 @@ module.exports = class CitizenDataCommand extends Command {
         console.log('Error reading client secret file:' + err);
         return;
       }
-      returnCitizens(authorize(JSON.parse(content)), message, citizenList =>
+      authorize(JSON.parse(content), authToken =>
       {
-        for(var i = 0; i < citizenList.length; i++) {
-          if(citizenList[i] == user.username + '#' + user.discriminator) {
-            var data = citizenList[i];
-          } else {
-            console.log('Not them!');
+        returnCitizens(authToken, message, citizenList =>
+        {
+          for(var i = 0; i < citizenList.length; i++) {
+            if(citizenList[i] == user.username + '#' + user.discriminator) {
+              var data = citizenList[i];
+            } else {
+              console.log('Not them!');
+            }
           }
-        }
-      });
-    })
+        });
+      })
+    });
 
   }
 
@@ -56,14 +59,13 @@ function authorize(credentials, callback) {
   var redirectUrl = credentials.installed.redirect_uris[0];
   var auth = new googleAuth();
   var oath2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
-
   //Checks for previously stored tokens
   fs.readFile(TOKEN_PATH, function(err, token) {
     if(err) {
       getNewToken(oath2Client, callback);
     } else {
       oath2Client.credentials = JSON.parse(token);
-      return oath2Client;
+      callback(oath2Client);
     }
   });
 }
