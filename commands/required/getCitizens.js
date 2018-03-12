@@ -32,14 +32,16 @@ module.exports = class CitizenDataCommand extends Command {
         console.log('Error reading client secret file:' + err);
         return;
       }
-      var citizenList = returnCitizens(authorize(JSON.parse(content)), message);
-      for(var i = 0; i < citizenList.length; i++) {
-        if(citizenList[i] == user.username + '#' + user.discriminator) {
-          var data = citizenList[i];
-        } else {
-          console.log('Not them!');
+      returnCitizens(authorize(JSON.parse(content)), message, citizenList =>
+      {
+        for(var i = 0; i < citizenList.length; i++) {
+          if(citizenList[i] == user.username + '#' + user.discriminator) {
+            var data = citizenList[i];
+          } else {
+            console.log('Not them!');
+          }
         }
-      }
+      });
     })
 
   }
@@ -126,7 +128,7 @@ function listCitizens(auth) {
 
 }
 
-function returnCitizens(auth, message) {
+function returnCitizens(auth, message, callback) {
   var sheets = google.sheets('v4');
   sheets.spreadsheets.values.get({
     auth: auth,
@@ -142,7 +144,7 @@ function returnCitizens(auth, message) {
       console.log('No Data Found');
       message.say('There was no data found in the spreadsheet. Please contact the High Court');
     } else {
-      return rows;
+      callback(rows);
     }
   })
 }
