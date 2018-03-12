@@ -32,7 +32,7 @@ module.exports = class CitizenDataCommand extends Command {
         console.log('Error reading client secret file:' + err);
         return;
       }
-      var citizenList = returnCitizens(JSON.parse(content), message);
+      var citizenList = returnCitizens(authorize(JSON.parse(content)), message);
       for(var i = 0; i < citizenList.length; i++) {
         if(citizenList[i] == user.username + '#' + user.discriminator) {
           var data = citizenList[i];
