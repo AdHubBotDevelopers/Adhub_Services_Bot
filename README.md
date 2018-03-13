@@ -1,2 +1,1 @@
-# Adhub_Services_Bot
-Partner Bot
+# Parvasian Services Bot
