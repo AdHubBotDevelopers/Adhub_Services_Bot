@@ -1,4 +1,5 @@
 const { Command } = require('discord.js-commando');
+const noisyDebug = false;
 var fs = require('fs');
 var readline = require('readline');
 var google = require('googleapis');
@@ -26,6 +27,10 @@ module.exports = class CitizenDataCommand extends Command {
     });
   }
 
+  hasPermission(message) {
+    return this.client.isOwner(message.author);
+  }
+
   run(message, { user }) {
     fs.readFile('client_secret.json', function processClientSecrets(err, content) {
       if(err) {
@@ -37,13 +42,39 @@ module.exports = class CitizenDataCommand extends Command {
         returnCitizens(authToken, message, citizenList =>
         {
           for(var i = 0; i < citizenList.length; i++) {
-            if(citizenList[i] == user.username + '#' + user.discriminator) {
-              var data = citizenList[i];
-              message.say('Data is: ' + data);
-              console.log('Found them1');
+            if(noisyDebug) {
+              message.say(user.id);
+            }
+            var data = citizenList[i];
+            if(data[1] == user.id) {
+              var rank = data[4];
+              if (rank == 10) {
+                message.say('They are the Dux! Do not mess with them.');
+              } else if (rank == 9) {
+                message.say('They are on the High Court. Report any infractions to the Dux.');
+              } else if (rank == 8) {
+                message.say('This person is either a Moff or a Deputy Minister. Report infractions to the High Court.');
+              } else if (rank == 7) {
+                message.say('This person is on the Parliament of Parvus. Report infractions to MCI.');
+              } else if (rank == 6) {
+                message.say('This person leads a Political Party. Report infractions to Parliament and MCI.');
+              } else if (rank == 5) {
+                message.say('This person leads a Parvasian Protectorate. Report infractions to Parliament and MCI.');
+              } else if (rank == 4 || rank == 3) {
+                message.say('This person is a fully fledged citizen of Parvus. Report infractions to a Global Moderator');
+              } else if (rank == 2) {
+                message.say('This person resides in a Parvasian Protectorate, but is not a full citizen. Report infractions to a Global Moderator');
+              } else if (rank == 1) {
+                message.say('This person is not to be trusted! Report any infractions to a Global Moderator')
+              }
+              if(noisyDebug) {
+                console.log('Found them!');
+              }
               return;
             } else {
-              console.log('Not them!');
+              if(noisyDebug) {
+                console.log('Not them!');
+              }
             }
           }
         });
