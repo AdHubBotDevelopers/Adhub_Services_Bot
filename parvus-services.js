@@ -38,7 +38,7 @@ client.on('ready', () => {
 
 client.on('guildMemberAdd', member => {
   var banList = openDB('DB/GlobalBanList.json');
-  banList.get({user: member.username}, function(err, data) {
+  banList.get({user: {id: member.id}}, function(err, data) {
     if (data.length != 0) {
       member.kick(`Globally banned from the Sovereignty of Parvus.`);
     }
