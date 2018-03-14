@@ -60,9 +60,12 @@ module.exports = class CitizenDataCommand extends Command {
                 message.say('This person leads a Political Party. Report infractions to Parliament and MCI.');
               } else if (rank == 5) {
                 message.say('This person leads a Parvasian Protectorate. Report infractions to Parliament and MCI.');
-              } else if (rank == 4 || rank == 3) {
-                message.say('This person is a fully fledged citizen of Parvus. Report infractions to a Global Moderator');
-              } else if (rank == 2) {
+              } else if (rank == 4) {
+                message.say('This person is a Global Moderator. Report infractions to the Ministry of War');
+              } else if (rank == 3) {
+                message.say('This person is a fully fledged citizen of the Sovereignty. Report infractions to a Global Moderator.');
+              } 
+              else if (rank == 2) {
                 message.say('This person resides in a Parvasian Protectorate, but is not a full citizen. Report infractions to a Global Moderator');
               } else if (rank == 1) {
                 message.say('This person is not to be trusted! Report any infractions to a Global Moderator')
