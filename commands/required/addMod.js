@@ -28,7 +28,7 @@ module.exports = class AddModCommand extends Command {
 
   run(message, { luckyDuck }) {
     var modList = openDB('DB/ModList.json');
-    modList.put({user: luckyDuck}, function(err) {
+    modList.put({user: luckyDuck.id}, function(err) {
       if (err != null) {
         console.log(err);
       } else {
