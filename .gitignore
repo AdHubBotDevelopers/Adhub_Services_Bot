@@ -66,3 +66,5 @@ Votes/
 DB/
 client_secret.json
 .vscode/*
+
+\.vs/
