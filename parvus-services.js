@@ -6,7 +6,7 @@ const path = require('path');
 const sqlite = require('sqlite');
 const yargs = require('yargs').argv;
 const client = new Commando.CommandoClient({
-  owner: ['118455061222260736', '396676498892914688', '285529770668851200', '396528169978560512'],
+  owner: ['118455061222260736'],
   commandPrefix: '\\',
   disableEveryone: true
 })

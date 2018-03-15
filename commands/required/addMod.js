@@ -15,15 +15,9 @@ module.exports = class AddModCommand extends Command {
           prompt: 'Please mention the user to be made a moderator',
           type: 'user'
         }
-      ]
+      ],
+      ownerOnly: true
     });
-  }
-  hasPermission(message) {
-    if (this.client.isOwner(message.author)) {
-      return true;
-    } else {
-      return message.say('Only Bot Owners can use this command.');
-    }
   }
 
   run(message, { luckyDuck }) {
