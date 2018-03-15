@@ -34,7 +34,12 @@ module.exports = class CallModCommand extends Command {
                 reason: 'Someone called for a moderator!'
             }).then(invite => 
         
-            channel.send(`${message.author} needs help in ${message.guild.name} with invite https://discord.gg/`+ invite.code + ` and reason ${reason}`));
+            channel.send(`${message.author} needs help in ${message.guild.name} with invite https://discord.gg/`+ invite.code + ` and reason ${reason}`)
+            ).catch(err=>
+             {
+                message.say(`Could not find the guild! Please manually call for a global moderator in our Capital, http://discord.gg/zXWytCd`);
+                
+            });
         } else {
             message.say(`Could not find the guild! Please manually call for a global moderator in our Capital, http://discord.gg/zXWytCd`);
         }
