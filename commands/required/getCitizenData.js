@@ -1,4 +1,6 @@
 const { Command } = require('discord.js-commando');
+const { RichEmbed } = require('discord.js');
+const embed = new RichEmbed();
 const noisyDebug = false;
 var fs = require('fs');
 var readline = require('readline');
@@ -49,7 +51,8 @@ module.exports = class CitizenDataCommand extends Command {
             if(data[1] == user.id) {
               var rank = data[4];
               if (rank == 10) {
-                message.say('They are the Dux! Do not mess with them.');
+                embed.setTitle('Citizen Data').setAuthor('Parvasian Records Security Administration').setDescription('They are the Dux!').setThumbnail('https://cdn.discordapp.com/attachments/421691105915043862/422129065143697429/Parvus_new_Flag_6.png').setTimestamp();
+                message.embed(embed)
               } else if (rank == 9) {
                 message.say('They are on the High Court. Report any infractions to the Dux.');
               } else if (rank == 8) {
@@ -60,9 +63,12 @@ module.exports = class CitizenDataCommand extends Command {
                 message.say('This person leads a Political Party. Report infractions to Parliament and MCI.');
               } else if (rank == 5) {
                 message.say('This person leads a Parvasian Protectorate. Report infractions to Parliament and MCI.');
-              } else if (rank == 4 || rank == 3) {
-                message.say('This person is a fully fledged citizen of Parvus. Report infractions to a Global Moderator');
-              } else if (rank == 2) {
+              } else if (rank == 4) {
+                message.say('This person is a Global Moderator. Report infractions to the Ministry of War');
+              } else if (rank == 3) {
+                message.say('This person is a fully fledged citizen of the Sovereignty. Report infractions to a Global Moderator.');
+              } 
+              else if (rank == 2) {
                 message.say('This person resides in a Parvasian Protectorate, but is not a full citizen. Report infractions to a Global Moderator');
               } else if (rank == 1) {
                 message.say('This person is not to be trusted! Report any infractions to a Global Moderator')

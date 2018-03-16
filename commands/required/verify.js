@@ -15,7 +15,7 @@ module.exports = class VerifyCommand extends Command {
 
   hasPermission(message) {
     var modList = openDB('DB/ModList.json');
-    modList.get({id: parseInt(message.author.id)}, function(err, data) {
+    modList.get({user: parseInt(message.author.id)}, function(err, data) {
       if(data.length != 0) {
         return true;
       } else {
